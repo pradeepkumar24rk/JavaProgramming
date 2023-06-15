@@ -48,6 +48,9 @@ public class LinkedList {
         
     }
     
+    void insertAtSpecific(int position){
+         
+    }
     void deleteAtBegin(){
         if(head==null)
             System.out.println("List is empty");
@@ -67,6 +70,10 @@ public class LinkedList {
             }
             p1.next=null;    
         }
+    }
+    
+    void deleteAtSpecific(int position){
+        
     }
     
     void display(){
@@ -93,12 +100,22 @@ public class LinkedList {
                     ob.insertAtBegin();
                     break;
                 case 3:
-                    ob.deleteAtBegin();
+                    System.out.println("Enter the position :");
+                    int p=sc.nextInt();
+                    ob.insertAtSpecific(p);
                     break;
                 case 4:
-                    ob.deleteAtLast();
+                    ob.deleteAtBegin();
                     break;
                 case 5:
+                    ob.deleteAtLast();
+                    break;
+                case 6:
+                    System.out.println("Enter the position :");
+                    int pos=sc.nextInt();
+                    ob.deleteAtSpecific(pos);
+                    break;
+                case 7:
                     ob.display();
                     break;
                 default:
