@@ -50,6 +50,41 @@ public class BinaryTree {
         System.out.print(root.val+" ");
     }
     
+    
+    
+    
+    //Find the tree is perfect tree or not
+    
+    
+    public static int depth(Tree root) {
+        int d=0;
+        while(root!=null){
+            d++;
+            root=root.left;
+        }
+        return d;
+    }
+    
+    public static boolean checkChildBranch(Tree root,int d,int level ) {
+        if(root==null)
+            return true;
+        
+        if(root.left==null && root.right==null)
+            return (d==level+1);
+        if(root.left==null || root.right==null)
+            return false;
+        
+        return checkChildBranch(root.left,d,level+1) && checkChildBranch(root.right,d,level+1);
+    }
+    
+    public static boolean isPerfectTree(Tree root) {
+        int d=depth(root);
+        return checkChildBranch(root,d,0);
+    }
+    
+    
+    
+    
     public static void main(String[] args) {
         Tree root=new Tree();
         root=null;
@@ -67,5 +102,7 @@ public class BinaryTree {
         preorder(root);
         System.out.println("\n-------------POSTORDER----------------");
         postorder(root);
+        System.out.println("\n-------------IsPerfectBinaryTree----------------");
+        System.out.print(isPerfectTree(root));
     }
 }
