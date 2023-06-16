@@ -24,7 +24,6 @@ public class LinkedList {
         else{
             Node p=head;
             while(p.next!=null){
-                System.out.println(p.val);
                 p=p.next;
             }
             p.next=obj1;
@@ -49,6 +48,26 @@ public class LinkedList {
     }
     
     void insertAtSpecific(int position){
+        System.out.println("Enter the insert value :");
+        int val=sc.nextInt();
+        Node obj1=new Node();
+        obj1.val=val;
+        obj1.next=null;
+        if(head==null){
+            System.out.println("head is null");
+            head=obj1;
+        }
+        else{
+            Node p=head;
+            int loc=0;
+            while(p!=null && ((position-1)>loc)){
+                p=p.next;
+                loc++;
+            }
+            Node temp=p.next;
+            p.next=obj1;
+            obj1.next=temp;
+        }
          
     }
     void deleteAtBegin(){
@@ -100,7 +119,7 @@ public class LinkedList {
                     ob.insertAtBegin();
                     break;
                 case 3:
-                    System.out.println("Enter the position :");
+                    System.out.println("Enter the position by index :");
                     int p=sc.nextInt();
                     ob.insertAtSpecific(p);
                     break;
@@ -111,7 +130,7 @@ public class LinkedList {
                     ob.deleteAtLast();
                     break;
                 case 6:
-                    System.out.println("Enter the position :");
+                    System.out.println("Enter the position by index :");
                     int pos=sc.nextInt();
                     ob.deleteAtSpecific(pos);
                     break;
@@ -122,7 +141,7 @@ public class LinkedList {
                     System.out.println("Wrong operation");
             }
         
-        }while(n<=5);
+        }while(n<=7);
         
         
     }
