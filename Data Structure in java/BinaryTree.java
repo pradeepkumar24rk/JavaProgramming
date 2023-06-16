@@ -88,11 +88,13 @@ public class BinaryTree {
     public static void main(String[] args) {
         Tree root=new Tree();
         root=null;
-        root=insert(root,5);
+        root=insert(root,10);
         root=insert(root,8);
-        root=insert(root,4);
-        root=insert(root,1);
-        root=insert(root,6);
+        root=insert(root,7);
+        root=insert(root,9);
+        root=insert(root,12);
+        root=insert(root,11);
+        root=insert(root,13);
         
         System.out.println("-------------INORDER----------------");
         inorder(root);
@@ -103,6 +105,6 @@ public class BinaryTree {
         System.out.println("\n-------------POSTORDER----------------");
         postorder(root);
         System.out.println("\n-------------IsPerfectBinaryTree----------------");
-        System.out.print(isPerfectTree(root));
+        System.out.println(isPerfectTree(root));
     }
 }
