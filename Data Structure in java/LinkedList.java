@@ -92,7 +92,25 @@ public class LinkedList {
     }
     
     void deleteAtSpecific(int position){
+        if(head==null)
+            System.out.println("List is empty");
+        else{
+            Node p=head;
+            Node temp=head;
+            int loc=0;
+            while(p!=null && ((position-1)>loc)){
+                p=p.next;
+                loc++;
+            }
+            
+            temp=p.next;
+            // System.out.println("p.val ="+p.val);
+            // System.out.println("temp.val ="+temp.val);
+            // System.out.println("temp.next.val ="+temp.next.val);
+            p.next=temp.next;
         
+            
+        }
     }
     
     void display(){
