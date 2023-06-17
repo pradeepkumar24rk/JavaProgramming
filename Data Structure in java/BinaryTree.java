@@ -5,6 +5,8 @@ class Tree {
 
 public class BinaryTree {
 
+    // insertion operation
+
     public static Tree insert(Tree root, int v) {
         if (root == null) {
             Tree node = new Tree();
@@ -17,6 +19,8 @@ public class BinaryTree {
 
         return root;
     }
+
+    // inorder traversal
 
     public static void inorder(Tree root) { // print tha value in ascending order
         if (root == null)
@@ -34,6 +38,8 @@ public class BinaryTree {
         desinorder(root.left);
     }
 
+    // preorder traversal
+    
     public static void preorder(Tree root) {
         if (root == null)
             return;
@@ -41,6 +47,8 @@ public class BinaryTree {
         preorder(root.left);
         preorder(root.right);
     }
+
+    // postOrder traversal
 
     public static void postorder(Tree root) {
         if (root == null)
@@ -78,6 +86,23 @@ public class BinaryTree {
         return checkChildBranch(root, d, 0);
     }
 
+    // Find the tree is sum of immediate left and right == root node
+
+    public static boolean checktheBinaryTree(Tree root) {
+
+        if (root == null || root.left == null && root.right == null)
+            return true;
+        int child = 0;
+        if (root.left != null)
+            child += root.left.val;
+        if (root.right != null)
+            child += root.right.val;
+        if (child == root.val && (checktheBinaryTree(root.left)) && (checktheBinaryTree(root.right)))
+            return true;
+        else
+            return false;
+    }
+
     public static void main(String[] args) {
         Tree root = new Tree();
         root = null;
@@ -98,6 +123,8 @@ public class BinaryTree {
         System.out.println("\n-------------POSTORDER----------------");
         postorder(root);
         System.out.println("\n-------------IsPerfectBinaryTree----------------");
-        System.out.println(isPerfectTree(root));
+        System.out.print(isPerfectTree(root));
+        System.out.println("\n-------------CheckTheBinaryTree----------------");
+        System.out.println(checktheBinaryTree(root));
     }
 }
