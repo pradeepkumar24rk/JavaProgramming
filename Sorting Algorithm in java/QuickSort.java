@@ -42,6 +42,6 @@ public class QuickSort {
     }
 }
 
-// BestCase averageCase worstCase
-// quick sort nlogn nlogn n^2 ----> it use partitioning method, it is less time
+//           BestCase averageCase worstCase
+// quicksort   nlogn       nlogn     n^2 ----> it use partitioning method, it is less time
 // complexity compare to others sorting alogrithm
