@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class CountingSort {
 
@@ -10,30 +11,37 @@ public class CountingSort {
     }
 
     public static void main(String[] args) {
-        int arr[] = { 2, 5, 3, 2, 5, 5, 9, 1, 3 }, n = arr.length;
+        Scanner sc = new Scanner(System.in);
+        int n = 10;
+        // int arr[] = new int[n];
+
+        int arr[]={2,5,3,4,5,5,6,9,3,1};
+
         int max = maximum(arr, n);
-        int frequenceArr[] = new int[max];
+        int frequenceArr[] = new int[max+1];
         Arrays.fill(frequenceArr, 0);
-        
-        for (int i = 1; i <= n; i++)
-            frequenceArr[arr[i]] += 1;
-        for (int i = 2; i < n; i++)
-            frequenceArr[i] = frequenceArr[i] + frequenceArr[i - 1];
-        
-        max=maximum(frequenceArr, n);
-            
-        int b[] = new int[max];
-    
-        
-        int i=n;
-        do {
-            b[frequenceArr[arr[i]]]=arr[i];
-            frequenceArr[i]-=1;
-            --i;
-        } while (i > 0);
-        
-        for(int k=1;k<=b.length;k++)
-            System.out.println(b[k]);
+
+        for (int i = 0; i < n; i++)
+        frequenceArr[arr[i]] += 1;
+
+        for (int i = 1; i <= max; i++)
+        frequenceArr[i] = frequenceArr[i] + frequenceArr[i - 1];
+
+        max=maximum(frequenceArr, max+1);
+
+        int b[] = new int[max+1];
+
+        for(int i=n-1;i>=0;i-- ){
+
+        b[frequenceArr[arr[i]]]=arr[i];
+        frequenceArr[i]-=1;
+        }
+
+        for(int k=0;k<=max;k++)
+            if(b[k]>0)
+                System.out.print(" "+b[k]+" ");
+
+        sc.close();
 
     }
 }
