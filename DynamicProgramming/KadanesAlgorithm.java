@@ -1,6 +1,6 @@
 //Find the largest Sum of contiguous subarray 
 //time complexity O(n)
-
+package DynamicProgramming;
 public class KadanesAlgorithm {
     static int algorithm(int arr[], int n){
         int max=Integer.MIN_VALUE,sum=0;
