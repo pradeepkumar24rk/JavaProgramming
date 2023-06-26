@@ -1,3 +1,5 @@
+//time complexity is O(n)
+
 package SearchingAlgorithm;
 
 public class LinearSearch {

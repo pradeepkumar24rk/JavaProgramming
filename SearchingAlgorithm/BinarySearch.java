@@ -1,3 +1,6 @@
+//time complexity O(log n)
+
+
 package SearchingAlgorithm;
 
 public class BinarySearch {
