@@ -77,3 +77,6 @@ public class flames {
       sc.close();;
   }
 }
+
+// output
+// Affection

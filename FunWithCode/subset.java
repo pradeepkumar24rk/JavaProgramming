@@ -16,7 +16,13 @@ public class subset {
             k++;
             System.out.println();
         }
-        System.out.println(s);
+        System.out.print(s);
       }
   }
 }
+
+// output
+
+// 1 1 2 
+
+// 2 
