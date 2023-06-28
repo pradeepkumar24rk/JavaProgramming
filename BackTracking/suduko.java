@@ -1,3 +1,4 @@
+package BackTracking;
 public class suduko {
     static int n=9;
     static boolean check(int grid[][],int row,int col){
