@@ -20,3 +20,19 @@ public class LargestSumOfSubsequence {
         System.out.println("largest Sum Of Subsequence :" + max);
     }
 }
+
+
+// Explaination
+
+//            1 2 3 4 5
+// 1-->1      1
+// 2-->10     0 1  
+// 3-->11     1 1
+// 4-->100    0 0 1
+// 5-->101    1 0 1
+// 6-->110    0 1 1
+// 7-->111    1 1 1
+// .
+// .
+// .
+// count
