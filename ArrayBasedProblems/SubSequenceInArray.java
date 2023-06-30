@@ -1,3 +1,4 @@
+package ArrayBasedProblems;
 public class SubSequenceInArray {
     public static void main(String[] args) {
         int a[]={5,3,1,6,2},sumOfSquence=6,n=a.length,total=(1<<n)-1,count=0;

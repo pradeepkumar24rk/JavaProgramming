@@ -1,3 +1,4 @@
+package StringBasedProblems;
 public class SubSequenceInString {
     public static void main(String[] args) {
         String s="abcd";

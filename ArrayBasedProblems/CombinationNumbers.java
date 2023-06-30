@@ -1,3 +1,4 @@
+package ArrayBasedProblems;
 import java.util.Scanner;
 
 public class CombinationNumbers {
