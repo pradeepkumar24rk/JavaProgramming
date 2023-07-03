@@ -24,9 +24,17 @@ public class Factorial {
         return temp;
 
     }
-
+    
+    static int recurivefact(int n){
+        if(n==1)
+        return 1;
+        return n*recurivefact(n-1);
+    }
+    
     public static void main(String[] args) {
         System.out.println(withMultOperator(5));
         System.out.println(withOutMultOperator(5));
+        System.out.println("Recurive operation");
+        System.out.println(recurivefact(5));
     }
 }
