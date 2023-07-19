@@ -12,6 +12,14 @@ public class demo {
         a=a+1;
         System.out.println(a);
         
+        StringBuilder s1=new StringBuilder("pradeep");
+        StringBuilder s2=s1;
+        s1.reverse();
+        System.out.println(s1);
+        System.out.println(s2);
+        
+        
+        
         
     }
 }
