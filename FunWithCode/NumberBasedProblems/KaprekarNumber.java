@@ -1,3 +1,4 @@
+package NumberBasedProblems;
 public class KaprekarNumber {
     static int square(int n)
     {

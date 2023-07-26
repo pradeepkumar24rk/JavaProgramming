@@ -1,3 +1,4 @@
+package NumberBasedProblems;
 public class HarshadNumber {
     public static void main(String[] args) {
         int n=1729,sum=0,temp=n;
