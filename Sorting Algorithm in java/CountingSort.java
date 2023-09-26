@@ -15,31 +15,31 @@ public class CountingSort {
         int n = 10;
         // int arr[] = new int[n];
 
-        int arr[]={2,5,3,4,5,5,6,9,3,1};
+        int arr[] = { 2, 5, 3, 4, 5, 5, 6, 9, 3, 1 };
 
         int max = maximum(arr, n);
-        int frequenceArr[] = new int[max+1];
+        int frequenceArr[] = new int[max + 1];
         Arrays.fill(frequenceArr, 0);
 
         for (int i = 0; i < n; i++)
-        frequenceArr[arr[i]] += 1;
+            frequenceArr[arr[i]] += 1;
 
         for (int i = 1; i <= max; i++)
-        frequenceArr[i] = frequenceArr[i] + frequenceArr[i - 1];
+            frequenceArr[i] = frequenceArr[i] + frequenceArr[i - 1];
 
-        max=maximum(frequenceArr, max+1);
+        max = maximum(frequenceArr, max + 1);
 
-        int b[] = new int[max+1];
+        int b[] = new int[max + 1];
 
-        for(int i=n-1;i>=0;i-- ){
+        for (int i = n - 1; i >= 0; i--) {
 
-        b[frequenceArr[arr[i]]]=arr[i];
-        frequenceArr[i]-=1;
+            b[frequenceArr[arr[i]]] = arr[i];
+            frequenceArr[i] -= 1;
         }
 
-        for(int k=0;k<=max;k++)
-            if(b[k]>0)
-                System.out.print(" "+b[k]+" ");
+        for (int k = 0; k <= max; k++)
+            if (b[k] > 0)
+                System.out.print(" " + b[k] + " ");
 
         sc.close();
 
