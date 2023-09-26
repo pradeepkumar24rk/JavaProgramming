@@ -24,7 +24,7 @@ public class PascelTriangle {
         int a[][] = pascelTriangle(n);
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < a[i].length; j++) {
-                System.out.print(a[i][j]);
+                System.out.print(a[i][j]+" ");
             }
             System.out.println();
         }
