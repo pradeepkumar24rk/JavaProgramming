@@ -1,5 +1,5 @@
+package Pattern;
 import java.util.*;
-
 public class PascelTriangle {
     static int[][] pascelTriangle(int n) {
         int arr[][] = new int[n - 1][];

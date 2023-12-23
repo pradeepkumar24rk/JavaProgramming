@@ -1,5 +1,5 @@
+package Pattern;
 import java.util.Scanner;
-
 public class patternM {
     public static void main(String arg[]){
        Scanner sc=new Scanner(System.in);

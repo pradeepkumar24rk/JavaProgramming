@@ -1,4 +1,5 @@
-class pattern3
+package Pattern;
+public class pattern3
 {
     public static void main(String[]args){
         int n=7;

@@ -55,7 +55,7 @@ public class SubstringEqual {
                 int count=0;
                 
                 while( j<c2.length && i<c1.length && c1[k]==c2[j]){
-                System.out.println(c1[k]);
+                System.out.print(c1[k]);
                     k++;
                     j++;
                     count++;
@@ -66,7 +66,7 @@ public class SubstringEqual {
                 k=i;
                 j++;
                 if(count >0)
-                System.out.println(count);
+                System.out.print(count);
                if(max<count)
                 max=count;
             }
@@ -74,7 +74,7 @@ public class SubstringEqual {
             // System.out.println(count);
             
         }
-        System.out.println(max);
+        System.out.print(max);
         
         
         // int max=0;
@@ -88,6 +88,7 @@ public class SubstringEqual {
         //         max=count;
         // }
         // System.out.println(max);
+        
     }
 }
 
