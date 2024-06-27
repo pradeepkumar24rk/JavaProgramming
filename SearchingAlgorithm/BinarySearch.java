@@ -31,9 +31,23 @@ public class BinarySearch {
         }
         return "Not Founded";
     }
+    
+    static String recursiveBinaryString(int arr[], int target, int start, int end) {
+        if(start>end) {
+            return "Not founded";
+        }
+        int mid = start +(end-start)/2;
+        if(arr[mid] == target)
+            return "founded";
+        if(arr[mid] < target)
+            return recursiveBinaryString(arr, target, mid+1, end);
+        
+        return recursiveBinaryString(arr, target, start, mid-1);
+    }
     public static void main(String[] args) {
-        int a[]={22,66,4,7,3,6,52,79,42},n=a.length,target=51;
+        int a[]={22,66,4,7,3,6,52,79,42},n=a.length,target=52;
         System.out.println(binarySearch(a,n,target));
+        System.out.println(recursiveBinaryString(a,target,0,n-1));
         
     }
 }
