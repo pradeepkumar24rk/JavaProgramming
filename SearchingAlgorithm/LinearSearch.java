@@ -2,6 +2,8 @@
 
 package SearchingAlgorithm;
 
+import java.util.ArrayList;
+
 public class LinearSearch {
 
     static String linearSearch(int a[],int n,int t){
@@ -36,6 +38,23 @@ public class LinearSearch {
     
     // if we have multiple occurs in search array if you need two value index added in the new array list
     
+    static ArrayList<Integer> recursiveLinearSearchFindMultipleIndex1(int a[],int index,int target, ArrayList<Integer> list) {   //optimized function for multiple index with arraylist
+        if(index == -1)
+            return list;
+        if(a[index]==target)
+            list.add(index);
+        return recursiveLinearSearchFindMultipleIndex1(a, index-1, target,list);
+    }
+    static ArrayList<Integer> recursiveLinearSearchFindMultipleIndex2(int a[],int index,int target) {  // It is not optimized
+        ArrayList<Integer> list = new ArrayList<>();
+        if(index == -1)
+            return list;
+        if(a[index]==target)
+            list.add(index);
+        list.addAll(recursiveLinearSearchFindMultipleIndex2(a, index-1, target));
+        return list;
+    }
+    
     public static void main(String[] args) {
         int a[]={11,3,55,55,6,7,355,77};
         int target=55;
@@ -44,5 +63,11 @@ public class LinearSearch {
         System.out.println(recursiveLinearSearch(a,0,target));
         System.out.println(recursiveLinearSearchForward(a,0,target));
         System.out.println(recursiveLinearSearchBackward(a,n-1,target));
+        
+        ArrayList<Integer> arr = new ArrayList<>();
+        System.out.println(recursiveLinearSearchFindMultipleIndex1(a,n-1,target,arr));
+        System.out.println(arr); //both return same because in previous call it send only reference many reference for single object.
+        
+        System.out.println(recursiveLinearSearchFindMultipleIndex2(a,n-1,target));
     }
 }
