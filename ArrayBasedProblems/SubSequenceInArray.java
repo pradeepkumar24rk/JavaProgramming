@@ -1,6 +1,7 @@
 package ArrayBasedProblems;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SubSequenceInArray {
 
@@ -39,6 +40,7 @@ public class SubSequenceInArray {
 
     private static void listSubSequenceDuplicate() { // time complexity - o(n*2^n) with duplication allow
         int nums[] = { 1, 2, 2 };
+        Arrays.sort(nums);
         ArrayList<ArrayList<Integer>> outer = new ArrayList<>();
         outer.add(new ArrayList<>());
         int start = 0, end = 0;
