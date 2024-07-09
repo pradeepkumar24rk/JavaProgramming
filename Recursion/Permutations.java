@@ -1,6 +1,7 @@
 package Recursion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Permutations {
 
@@ -49,11 +50,30 @@ public class Permutations {
         return count;
     }
     
+// Array Permutation
+    static void permutationArray(int[] nums,List<List<Integer>> list,List<Integer> ans,int index) {
+        if(index == nums.length){
+            list.add(ans);
+            return;
+        }
+        for(int i = 0;i<=ans.size();i++){
+            List<Integer> temp = new ArrayList<>(ans) ;
+            temp.add(i,nums[index]);
+            permutationArray(nums,list,temp,index+1);
+        }
+    }
+    public static List<List<Integer>> Arraypermute(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        permutationArray(nums,list,new ArrayList<Integer>(),0);
+        return list;
+    }
+    
     public static void main(String[] args) {
         String str = "abc";
         permutation(str,"");
         System.out.println(permutationArrayList(str,""));
         System.out.println(permutationCount("abcd",""));
+        System.out.println(Arraypermute(new int[] {1,2,3}));
         
     }
 }
