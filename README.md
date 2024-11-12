@@ -58,7 +58,7 @@ Whether you're a beginner looking to build a strong foundation or an intermediat
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/java-programming
+   git clone https://github.com/pradeepkumar24rk/java-programming
    cd java-programming
    ```
 
