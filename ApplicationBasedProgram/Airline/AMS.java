@@ -1,14 +1,25 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class AMS {
 
     static Scanner sc = new Scanner(System.in);
-    static HashMap<Integer, Customer> customerMapList = new HashMap<>();
-    static HashMap<Integer, Carrier> carrierMapList = new HashMap<>();
+    
+    static Customer[] customerList = new Customer[10];
+    static Carrier[] carrierList = new Carrier[10];
+    static Flight[] flightList = new Flight[10];
+
+    static int customerCount = 0;
+    static int carrierCount = 0;
+    static int flightCount = 0;
     
     static Customer loggedInCustomer = null;
 
     private static void registerCustomer() {
+        if (customerCount >= 10) {
+            System.out.println("Customer list is full. Cannot register more customers.");
+            return;
+        }
+
         System.out.print("Enter the user name: ");
         String userName = sc.nextLine();
 
@@ -17,7 +28,7 @@ public class AMS {
 
         System.out.print("Enter the phone: ");
         Long phone = sc.nextLong();
-        sc.nextLine(); // Consume newline
+        sc.nextLine();
 
         System.out.print("Enter the email: ");
         String email = sc.nextLine();
@@ -41,36 +52,38 @@ public class AMS {
         System.out.print("Enter the dob: ");
         String dob = sc.nextLine();
 
-        int userId = customerMapList.size() + 1;
+        int userId = customerCount + 1;
         Customer newCustomer = new Customer(userId, userName, password, email, phone, address1, address2, city, state, zipcode, dob);
-        customerMapList.put(userId, newCustomer);
+        customerList[customerCount++] = newCustomer;
 
         System.out.println("Registered Successfully!\nYour User ID: " + userId);
     }
 
-    private static boolean checkValidCustomer(int userId, String password) {
-        if (customerMapList.containsKey(userId) && customerMapList.get(userId).getPassword().equals(password)) {
-            loggedInCustomer = customerMapList.get(userId);
-            return true; 
+    private static boolean checkValidCustomer(int userId, String password, String role) {
+        for (Customer customer : customerList) {
+            if (customer != null && customer.getUserId() == userId && customer.getPassword().equals(password) && customer.getRole().equals(role)) {
+                loggedInCustomer = customer;
+                return true;
+            }
         }
         System.out.println("\nYou're Not Authenticated. Please Register.");
         return false;
     }
 
     private static boolean login(String type) {
-        if (type.equals("admin")) {
-            return Admin.adminMenu();
-        } else if (type.equals("customer")) {
-            System.out.print("-------------------------------------------------------------------");
-            System.out.print("\nEnter the userId: ");
-            int userId = sc.nextInt();
-            sc.nextLine(); // Consume newline
-
-            System.out.print("Enter the password: ");
-            String password = sc.nextLine();
-            System.out.print("-------------------------------------------------------------------");
-
-            if (checkValidCustomer(userId, password)) {
+        System.out.print("-------------------------------------------------------------------");
+        System.out.print("\nEnter the userId: ");
+        int userId = sc.nextInt();
+        sc.nextLine();
+        
+        System.out.print("Enter the password: ");
+        String password = sc.nextLine();
+        System.out.print("-------------------------------------------------------------------");
+        
+        if (checkValidCustomer(userId, password, type)) {
+            if (type.equals("Admin")) {
+                return Admin.adminMenu();
+            } else if (type.equals("Customer")) {
                 return Customer.customerMenu();
             }
         }
@@ -78,62 +91,122 @@ public class AMS {
     }
 
     private static void displayCustomers() {
-        if (customerMapList.isEmpty()) {
-            System.out.println("\nNo Customers Registered Yet.");
+        if (customerCount == 0) {
+            System.out.println("\nNo User Registered Yet.");
         } else {
-            System.out.println("\nList of Customers:");
-            for (Map.Entry<Integer, Customer> map : customerMapList.entrySet()) {
+            System.out.println("\nList of Users:");
+            for (int i = 0; i < customerCount; i++) {
+                Customer customer = customerList[i];
                 System.out.println(
-                        "User ID: " + map.getValue().getUserId() +
-                        " | Name: " + map.getValue().getUserName()
+                        "User ID: " + customer.getUserId() +
+                        " | Name: " + customer.getUserName() +
+                        " | Role: " + customer.getRole() +
+                        " | Category: " + customer.getCategory()
                 );
             }
         }
     }
+    
+    private static void addDummyData() {
+        if (customerCount < 10) {
+            Customer user1 = new Customer(1, "pradeep", "krish", "pradeep@gmail.com",
+                    987654322L, "south", "murukanathapuram", "karur", "tamil", 639001L, "24/4/2002");
+            user1.setRole("Customer");
+            user1.setCategory("Silver");
+            customerList[customerCount++] = user1;
+        }
 
+        if (customerCount < 10) {
+            Customer user2 = new Customer(2, "pradeep2", "krish2", "pradeep2@gmail.com",
+                    987654322L, "north", "somewhere", "chennai", "tamil", 600001L, "25/5/2003");
+            user2.setRole("Admin");
+            user2.setCategory("Gold");
+            customerList[customerCount++] = user2;
+        }
+        
+        if (carrierCount < 10) {
+            carrierList[carrierCount++] = new Carrier(1, "jet carrier", 12, 22, 33, 44, 55, 66, 77, 22, 11, 44);
+        }
+
+        if (flightCount < 10) {
+            flightList[flightCount++] = new Flight(1, 1, "chennai", "Paris", "24/02/2025", 88, 33, 44, 55);
+        }
+    }
+    
+    private static void searchFlight() {
+        System.out.print("Enter Origin: ");
+        String origin = sc.nextLine();
+        
+        System.out.print("Enter Destination: ");
+        String destination = sc.nextLine();
+        
+        System.out.print("Enter Travel Date: ");
+        String travelDate = sc.nextLine();
+        
+        Flight findSearchFlight = null;
+        
+        for (int i = 0; i < flightCount; i++) {
+            Flight flight = flightList[i];
+            if (flight.getOrigin().equalsIgnoreCase(origin) && flight.getDestination().equalsIgnoreCase(destination) && flight.getTravelDate().equalsIgnoreCase(travelDate)) {
+                findSearchFlight = flight;
+                break;
+            }
+        }
+        
+        if (findSearchFlight == null) {
+            System.out.println("\nNo Flights Yet.");
+        } else {
+            System.out.println("\nList of Flights:");
+            System.out.println(
+                    "Flight ID: " + findSearchFlight.getFlightId() +   
+                    " | Carrier ID: " + findSearchFlight.getCarrierId()
+            );
+        }
+    }
+    
     public static void main(String[] args) {
-        // Adding default customers
-        customerMapList.put(1, new Customer(1, "pradeep", "krish", "pradeep@gmail.com",
-                987654322L, "south", "murukanathapuram", "karur", "tamil", 639001L, "24/4/2002"));
-
-        customerMapList.put(2, new Customer(2, "pradeep2", "krish2", "pradeep2@gmail.com",
-                987654322L, "north", "somewhere", "chennai", "tamil", 600001L, "25/5/2003"));
-
+        addDummyData();
         int n;
         do {
             System.out.println("\n-------------------------------------------------------------------");
+            System.out.println("Main Menu");
             System.out.println("1. Admin Sign-in");
             System.out.println("2. Customer Sign-in");
             System.out.println("3. Customer Registration");
-            System.out.println("4. Display Customer List");
-            System.out.println("5. Exit");
+            System.out.println("4. Search Flight");
+            System.out.println("5. Display Users List");
+            System.out.println("6. Exit");
             System.out.println("-------------------------------------------------------------------");
             System.out.print("Enter the operation: ");
 
             n = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (n) {
                 case 1:
                     System.out.println("Admin sign-in");
-                    if (login("admin")) System.exit(0);
+                    if (login("Admin")) System.exit(0);
                     break;
 
                 case 2:
                     System.out.println("Customer sign-in");
-                    if (login("customer")) System.exit(0);
+                    if (login("Customer")) System.exit(0);
                     break;
 
                 case 3:
                     System.out.println("Customer Registration");
                     registerCustomer();
                     break;
-
                 case 4:
-                    displayCustomers();
+                    System.out.println("Search Flight");
+                    searchFlight();
                     break;
 
                 case 5:
+                    displayCustomers();
+                    break;
+
+                case 6:
                     System.out.println("Exiting the program...");
                     System.exit(0);
                     break;
