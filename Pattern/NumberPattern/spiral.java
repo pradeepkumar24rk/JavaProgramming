@@ -12,7 +12,6 @@ public class spiral {
       {
         for(int i=col;i<=right;i++){
           a[row][i]=x;
-        //  System.out.print(a[row][i]+" ");
           x++;
           col++;
           
@@ -20,30 +19,22 @@ public class spiral {
         col--;
         right--;
         for(int i=row+1;i<=bottom;i++){
-         // try{
           a[i][col]=x;
-          // System.out.print(a[i][col]+" ");
           row++;
           x++;
-         // }catch(Exception e){}
         }
-      //  row--;
         bottom--;
         for(int i=col-1;i>=left;i--){
           a[row][i]=x;
-         //  System.out.print(a[row][i]+" ");
           x++;
           col--;
         }
-       // col++;
         left++;
         for(int i=row-1;i>top;i--){
           a[i][col]=x;
-          // System.out.print(a[i][col]+" ");
           x++;
           row--;
         }
-       // row++;
         top++;
         col++;
       }

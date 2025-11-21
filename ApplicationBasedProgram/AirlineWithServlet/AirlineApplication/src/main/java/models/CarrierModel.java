@@ -1,4 +1,6 @@
-public class Carrier {
+package models;
+
+public class CarrierModel {
     private int carrierId;
     private String carrierName;
     private int discountPercentageThirtyDaysAdvanceBooking;
@@ -12,7 +14,7 @@ public class Carrier {
     private int goldUserDiscount;
     private int platinumUserDiscount;
 
-    public Carrier(int carrierId, String carrierName, int discountPercentageThirtyDaysAdvanceBooking,
+    public CarrierModel(int carrierId, String carrierName, int discountPercentageThirtyDaysAdvanceBooking,
             int discountPercentageSixtyDaysAdvanceBooking,
             int discountPercentageNinetyDaysAdvanceBooking,
             int bulkBookingDiscount,

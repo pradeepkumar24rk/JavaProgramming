@@ -3,19 +3,23 @@ import java.util.Scanner;
 public class AMS {
 
     static Scanner sc = new Scanner(System.in);
-    
-    static Customer[] customerList = new Customer[10];
+
+    static Users[] userList = new Users[10];
     static Carrier[] carrierList = new Carrier[10];
     static Flight[] flightList = new Flight[10];
+    static FlightBooking[] flightBookingList = new FlightBooking[10];
+    static FlightSchedule[] flightScheduleList = new FlightSchedule[10];
 
-    static int customerCount = 0;
+    static int userCount = 0;
     static int carrierCount = 0;
     static int flightCount = 0;
-    
-    static Customer loggedInCustomer = null;
+    static int flightBookingCount = 0;
+    static int flightScheduleCount = 0;
+
+    static Users loggedInUser = null;
 
     private static void registerCustomer() {
-        if (customerCount >= 10) {
+        if (userCount >= 10) {
             System.out.println("Customer list is full. Cannot register more customers.");
             return;
         }
@@ -47,22 +51,24 @@ public class AMS {
 
         System.out.print("Enter the zipcode: ");
         Long zipcode = sc.nextLong();
-        sc.nextLine(); 
+        sc.nextLine();
 
         System.out.print("Enter the dob: ");
         String dob = sc.nextLine();
 
-        int userId = customerCount + 1;
-        Customer newCustomer = new Customer(userId, userName, password, email, phone, address1, address2, city, state, zipcode, dob);
-        customerList[customerCount++] = newCustomer;
+        int userId = userCount + 1;
+        Users newCustomer = new Users(userId, userName, password, email, phone, address1, address2, city, state,
+                zipcode, dob);
+        userList[userCount++] = newCustomer;
 
         System.out.println("Registered Successfully!\nYour User ID: " + userId);
     }
 
     private static boolean checkValidCustomer(int userId, String password, String role) {
-        for (Customer customer : customerList) {
-            if (customer != null && customer.getUserId() == userId && customer.getPassword().equals(password) && customer.getRole().equals(role)) {
-                loggedInCustomer = customer;
+        for (Users user : userList) {
+            if (user != null && user.getUserId() == userId && user.getPassword().equals(password)
+                    && user.getRole().equals(role)) {
+                loggedInUser = user;
                 return true;
             }
         }
@@ -75,11 +81,11 @@ public class AMS {
         System.out.print("\nEnter the userId: ");
         int userId = sc.nextInt();
         sc.nextLine();
-        
+
         System.out.print("Enter the password: ");
         String password = sc.nextLine();
         System.out.print("-------------------------------------------------------------------");
-        
+
         if (checkValidCustomer(userId, password, type)) {
             if (type.equals("Admin")) {
                 return Admin.adminMenu();
@@ -91,48 +97,54 @@ public class AMS {
     }
 
     private static void displayCustomers() {
-        if (customerCount == 0) {
+        if (userCount == 0) {
             System.out.println("\nNo User Registered Yet.");
         } else {
             System.out.println("\nList of Users:");
-            for (int i = 0; i < customerCount; i++) {
-                Customer customer = customerList[i];
+            for (int i = 0; i < userCount; i++) {
+                Users user = userList[i];
                 System.out.println(
-                        "User ID: " + customer.getUserId() +
-                        " | Name: " + customer.getUserName() +
-                        " | Role: " + customer.getRole() +
-                        " | Category: " + customer.getCategory()
-                );
+                        "User ID: " + user.getUserId() +
+                                " | Name: " + user.getUserName() +
+                                " | Role: " + user.getRole() +
+                                " | Category: " + user.getCategory());
             }
         }
     }
-    
+
     private static void addDummyData() {
-        if (customerCount < 10) {
-            Customer user1 = new Customer(1, "pradeep", "krish", "pradeep@gmail.com",
-                    987654322L, "south", "murukanathapuram", "karur", "tamil", 639001L, "24/4/2002");
+        if (userCount < 10) {
+            Users user1 = new Users(1, "pradeep", "krish", "pradeep@gmail.com",
+                    987654322L, "south", "murukanathapuram", "karur", "tamil", 639001L, "24-04-2002");
             user1.setRole("Customer");
             user1.setCategory("Silver");
-            customerList[customerCount++] = user1;
+            userList[userCount++] = user1;
         }
 
-        if (customerCount < 10) {
-            Customer user2 = new Customer(2, "pradeep2", "krish2", "pradeep2@gmail.com",
-                    987654322L, "north", "somewhere", "chennai", "tamil", 600001L, "25/5/2003");
+        if (userCount < 10) {
+            Users user2 = new Users(2, "pradeep2", "krish2", "pradeep2@gmail.com",
+                    987654322L, "north", "somewhere", "chennai", "tamil", 600001L, "25-05-2003");
             user2.setRole("Admin");
             user2.setCategory("Gold");
-            customerList[customerCount++] = user2;
+            userList[userCount++] = user2;
         }
-        
+
         if (carrierCount < 10) {
-            carrierList[carrierCount++] = new Carrier(1, "jet carrier", 12, 22, 33, 44, 55, 66, 77, 22, 11, 44);
+            carrierList[carrierCount++] = new Carrier(1, "jet carrier", 2, 3, 5, 2, 40, 70, 95, 1, 2, 4);
         }
 
         if (flightCount < 10) {
-            flightList[flightCount++] = new Flight(1, 1, "chennai", "Paris", "24/02/2025", 88, 33, 44, 55);
+            flightList[flightCount++] = new Flight(1, 1, "chennai", "Paris", 88, 20, 10, 10);
         }
+        
+        if(flightScheduleCount<10) 
+            flightScheduleList[flightScheduleCount++] = new FlightSchedule(1,1,"27-02-2025");
+            
+        if(flightBookingCount<10) 
+            flightBookingList[flightBookingCount++] = new FlightBooking(1,1,1,5,"business","27-02-2025","Booked",175 );
+            
     }
-    
+
     private static void searchFlight() {
         System.out.print("Enter Origin: ");
         String origin = sc.nextLine();
@@ -144,12 +156,16 @@ public class AMS {
         String travelDate = sc.nextLine();
         
         Flight findSearchFlight = null;
-        
-        for (int i = 0; i < flightCount; i++) {
-            Flight flight = flightList[i];
-            if (flight.getOrigin().equalsIgnoreCase(origin) && flight.getDestination().equalsIgnoreCase(destination) && flight.getTravelDate().equalsIgnoreCase(travelDate)) {
-                findSearchFlight = flight;
-                break;
+        FlightSchedule flightScheduled = null;
+        for (int i = 0; i < flightScheduleCount; i++) {
+            flightScheduled = flightScheduleList[i];
+            if(flightScheduled.getDateOfTravel().equals(travelDate));
+            {
+                Flight flight = flightList[flightScheduled.getFlightId()-1];
+                if (flight.getOrigin().equalsIgnoreCase(origin) && flight.getDestination().equalsIgnoreCase(destination)) {
+                    findSearchFlight = flight;
+                    break;
+                }
             }
         }
         
@@ -159,7 +175,9 @@ public class AMS {
             System.out.println("\nList of Flights:");
             System.out.println(
                     "Flight ID: " + findSearchFlight.getFlightId() +   
-                    " | Carrier ID: " + findSearchFlight.getCarrierId()
+                    " | Carrier ID: " + findSearchFlight.getCarrierId() +
+                    " | Schedule ID: " + flightScheduled.flightScheduleId()+
+                    " | Air Fare: "+findSearchFlight.getAirFare()
             );
         }
     }
@@ -185,12 +203,14 @@ public class AMS {
             switch (n) {
                 case 1:
                     System.out.println("Admin sign-in");
-                    if (login("Admin")) System.exit(0);
+                    if (login("Admin"))
+                        System.exit(0);
                     break;
 
                 case 2:
                     System.out.println("Customer sign-in");
-                    if (login("Customer")) System.exit(0);
+                    if (login("Customer"))
+                        System.exit(0);
                     break;
 
                 case 3:

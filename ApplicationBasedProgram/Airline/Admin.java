@@ -1,7 +1,8 @@
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Admin extends AMS {
-  static Scanner sc = new Scanner(System.in);
 
   public static void createCarrier() {
     if (carrierCount >= 10) {
@@ -133,25 +134,72 @@ public class Admin extends AMS {
     System.out.print("Enter Destination: ");
     String destination = sc.nextLine();
 
-    System.out.print("Enter Travel Date: ");
-    String travelDate = sc.nextLine();
-
     System.out.print("Enter Air Fare: ");
     int airfare = sc.nextInt();
-
+    
+    System.out.print("Enter Seat Capacity Economy Class: ");
+    int seatCapacityEconomyClass = sc.nextInt();
+    
+    System.out.print("Enter Seat Capacity Business Class: ");
+    int seatCapacityBusinessClass = sc.nextInt();
+    
     System.out.print("Enter Seat Capacity Executive Class: ");
     int seatCapacityExecutiveClass = sc.nextInt();
 
-    System.out.print("Enter Seat Capacity Business Class: ");
-    int seatCapacityBusinessClass = sc.nextInt();
-
-    System.out.print("Enter Seat Capacity Economy Class: ");
-    int seatCapacityEconomyClass = sc.nextInt();
-
-    Flight newFlight = new Flight(flightCount + 1, carrierId, origin, destination, travelDate, airfare,
-        seatCapacityBusinessClass, seatCapacityEconomyClass, seatCapacityExecutiveClass);
+    Flight newFlight = new Flight(flightCount + 1, carrierId, origin, destination, airfare,
+        seatCapacityEconomyClass, seatCapacityBusinessClass, seatCapacityExecutiveClass);
     flightList[flightCount++] = newFlight;
     System.out.println("Flight Added Successfully");
+  }
+
+  public static void sheduleFlight() {
+    System.out.print("Enter FlightId: ");
+    int flightId = sc.nextInt();
+
+    sc.nextLine();
+    System.out.print("Enter Date of Travel: ");
+    String dateOfTravel = sc.nextLine();
+
+    Flight f = flightList[flightId - 1];
+
+    if (f == null) {
+      System.out.println("Flight is Not Available");
+      return;
+    }
+
+    FlightSchedule newScheduleFlight = new FlightSchedule(flightScheduleCount + 1, flightId, dateOfTravel);
+    flightScheduleList[flightScheduleCount++] = newScheduleFlight;
+    System.out.println("Flight " + flightId + " is scheduled");
+  }
+
+  public static void fightCancellation() {
+    System.out.print("Enter Flight Id: ");
+    int flightId = sc.nextInt();
+    
+    sc.nextLine();
+    System.out.print("Enter Date of travel: ");
+    String travelDate = sc.nextLine();
+
+    int totalRefundAmount = 0;
+    for (int i = 0; i < flightBookingCount; i++) {
+      FlightBooking temp = flightBookingList[i];
+      if (temp.getFlightId() == flightId && temp.getDateOfTravel().equals(travelDate)) {
+        temp.setBookingStatus("Cancelled");
+        totalRefundAmount += temp.getBookingAmount();
+      }
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    LocalDate currentDate = LocalDate.now();
+    LocalDate dateOfTravel = LocalDate.parse(travelDate, formatter);
+
+    long daysBetween = ChronoUnit.DAYS.between(currentDate, dateOfTravel);
+
+    if (daysBetween > 7)
+      System.out.println("Refund Account For All Flight Cancellation: Rs. " + totalRefundAmount);
+    else
+      System.out.println("Refund Account For All Flight Cancellation Within One week: Rs. "
+          + (totalRefundAmount + (totalRefundAmount * 10) / 100));
   }
 
   public static void displayCarrier() {
@@ -161,8 +209,8 @@ public class Admin extends AMS {
       System.out.println("\nList of Carriers:");
       for (int i = 0; i < carrierCount; i++) {
         Carrier carrier = carrierList[i];
-        if(carrier!=null)
-        System.out.println("Carrier ID: " + carrier.getCarrierId() + " | Name: " + carrier.getCarrierName());
+        if (carrier != null)
+          System.out.println("Carrier ID: " + carrier.getCarrierId() + " | Name: " + carrier.getCarrierName());
       }
     }
   }
@@ -174,10 +222,24 @@ public class Admin extends AMS {
       System.out.println("\nList of Flights:");
       for (int i = 0; i < flightCount; i++) {
         Flight flight = flightList[i];
-        if(flight!=null)
-        System.out.println("Flight ID: " + flight.getFlightId() + " | Carrier ID: " + flight.getCarrierId());
+        if (flight != null)
+          System.out.println("Flight ID: " + flight.getFlightId() + " | Carrier ID: " + flight.getCarrierId());
       }
     }
+  }
+
+  public static void displayFlightBookedDetails() {
+    if (flightBookingCount > 0) {
+      for (int i = 0; i < flightBookingCount; i++) {
+        System.out.println("Booking Id: " + flightBookingList[i].getBookingId() +
+            "| Flight Id: " + flightBookingList[i].getFlightId() +
+            "| User Id: " + flightBookingList[i].getUserId() +
+            "| No Of Seats: " + flightBookingList[i].getNoOfSeats() +
+            "| Booking Status: " + flightBookingList[i].getBookingStatus() +
+            "| Booking Amount: " + flightBookingList[i].getBookingAmount());
+      }
+    } else
+      System.out.println("Empty Booking Details.");
   }
 
   public static boolean adminMenu() {
@@ -185,7 +247,7 @@ public class Admin extends AMS {
     do {
       System.out.print("-------------------------------------------------------------------");
       System.out.print(
-          "\nAdmin Menu\n1.Add Carrier\n2.Edit Carrier Details by CarrierId\n3.Remove Carrier by Id\n4.Flight Cancellation - Refund Price Calculation\n5.Add Flight\n6.Display Carrier\n7.Display Flight\n8.Exit Admin\n9.Exit AMS");
+          "\nAdmin Menu\n1.Add Carrier\n2.Edit Carrier Details by CarrierId\n3.Remove Carrier by Id\n4.Flight Cancellation - Refund Price Calculation\n5.Add Flight\n6.Schedule Flight\n7.Display Carrier\n8.Display Flight\n9.Display All Flight Booking Details\n10.Exit Admin\n11.Exit AMS");
       System.out.print("\n-------------------------------------------------------------------");
       System.out.print("\nEnter the operation : ");
       choose_menu = sc.nextInt();
@@ -205,29 +267,38 @@ public class Admin extends AMS {
           break;
         case 4:
           System.out.println("Flight Cancellation - Refund Price Calculation");
+          fightCancellation();
           break;
         case 5:
           System.out.println("Add Flight");
           createFlight();
           break;
         case 6:
+            System.out.println("Schedule Flight");
+            sheduleFlight();
+            break;
+        case 7:
           System.out.println("Display Carriers");
           displayCarrier();
           break;
-        case 7:
+        case 8:
           System.out.println("Display Flights");
           displayFlight();
           break;
-        case 8:
+        case 9:
+            System.out.println("Display Flight Booking Details");
+            displayFlightBookedDetails();
+            break;
+        case 10:
           System.out.println("Exit Admin");
           break;
-        case 9:
+        case 11:
           System.out.println("Exit AMS");
           return true;
         default:
           System.out.print("Invalid");
       }
-    } while (choose_menu != 8);
+    } while (choose_menu != 10);
     return false;
   }
 }

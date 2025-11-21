@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-19">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="D:/ILP Document/derby_sqlite_jarfile/sqlite-jdbc-3.6.20.1.jar"/>
+	<classpathentry kind="lib" path="D:/ILP Document/apache-tomcat-9073-windows-x64/apache-tomcat-9.0.73/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="D:/ILP Document/apache-tomcat-9073-windows-x64/apache-tomcat-9.0.73/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="D:/ILP Document/apache-tomcat-9073-windows-x64/apache-tomcat-9.0.73/lib/tomcat-api.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

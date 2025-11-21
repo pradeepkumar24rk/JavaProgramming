@@ -1,0 +1,251 @@
+-- 1
+CREATE TABLE Carrier (
+    carrierId                                                   INT PRIMARY KEY,
+    carrierName                                                 VARCHAR(255),
+    discountPercentageThirtyDaysAdvanceBooking                  INT,
+    discountPercentageSixtyDaysAdvanceBooking                   INT,
+    discountPercentageNinetyDaysAdvanceBooking                  INT,
+    refundPercentageForTicketCancellation2DaysBeforeTravelDate  INT,
+    refundPercentageForTicketCancellation10DaysBeforeTravelDate INT,
+    refundPercentageForTicketCancellation20DaysBeforeTravelDate INT,
+    bulkBookingDiscount                                         INT,
+    silverUserDiscount                                          INT,
+    goldUserDiscount                                            INT,
+    platinumUserDiscount                                        INT
+);
+
+-- 2
+INSERT INTO Carrier VALUES ( 1,
+                             'INDIGO',
+                             21,
+                             14,
+                             16,
+                             32,
+                             10,
+                             9,
+                             5,
+                             5,
+                             6,
+                             5 );
+
+INSERT INTO Carrier VALUES ( 2,
+                             'TATA',
+                             10,
+                             11,
+                             16,
+                             12,
+                             9,
+                             9,
+                             5,
+                             7,
+                             6,
+                             2 );
+
+-- 3
+CREATE TABLE Flight (
+    flightId                   INT PRIMARY KEY,
+    carrierId                  INT ,
+    origin                     VARCHAR(255),
+    destination                VARCHAR(255),
+    airFare                    INT,
+    seatCapacityEconomyClass   INT CHECK (seatCapacityEconomyClass <20),
+    seatCapacityBusinessClass  INT CHECK (seatCapacityBusinessClass<10),
+    seatCapacityExecutiveClass INT CHECK (seatCapacityExecutiveClass<10),
+    FOREIGN KEY ( carrierId )
+        REFERENCES Carrier ( carrierId )
+);
+
+-- 4
+INSERT INTO Flight VALUES(
+    1,
+    1,
+    'CHENNAI',
+    'PUNE',
+    3500,
+    19,
+    9,
+    9
+);
+INSERT INTO Flight VALUES(
+    2,
+    1,
+    'TRICHY',
+    'MUMBAI',
+    3500,
+    19,
+    9,
+    9
+);
+INSERT INTO Flight VALUES(
+    3,
+    2,
+    'DUBAI',
+    'PUNE',
+    14500,
+    19,
+    9,
+    9
+);
+
+SELECT * FROM Flight;
+
+-- 5
+SELECT t1.carrierName, COUNT(t2.flightId) AS flightCount
+FROM Carrier t1
+JOIN Flight t2 ON t1.carrierId = t2.carrierId
+GROUP BY t1.carrierName 
+ORDER BY flightCount;
+
+
+-- 6
+SELECT t1.flightId, t2.carrierName, t1.origin, t1.destination, t1.airFare 
+FROM Flight t1 
+JOIN Carrier t2 ON t1.carrierId = t2.carrierId
+WHERE t1.destination = 'PUNE' ORDER BY t1.airFare;
+
+-- 7
+CREATE TABLE FlightSchedule (
+    flightScheduleId           INT PRIMARY KEY,
+    flightId                   INT,
+    economyClassBookedCount    INT,
+    businessClassBookedCount   INT,
+    executiveClassBookedCount  INT,
+    FOREIGN KEY ( flightId )
+        REFERENCES Flight ( flightId )
+);
+
+INSERT INTO FlightSchedule VALUES (
+    1,
+    1,
+    18,
+    7,
+    6
+);
+
+SELECT * FROM FlightSchedule;
+
+SELECT 
+    f.flightId, 
+    c.carrierName, 
+    f.origin, 
+    f.destination, 
+    f.airFare, 
+    (f.seatCapacityBusinessClass - fs.businessClassBookedCount) AS RemainingBusinessClassSeats,
+    (f.seatCapacityEconomyClass - fs.economyClassBookedCount) AS RemainingEconomyClassSeats,
+    (f.seatCapacityExecutiveClass - fs.executiveClassBookedCount) AS RemainingExecutiveClassSeats
+FROM Flight f 
+JOIN Carrier c ON f.carrierId = c.carrierId 
+JOIN FlightSchedule fs ON f.flightId = fs.flightId;
+
+-- 8
+CREATE TABLE User (
+  userID INT PRIMARY KEY,
+  userName VARCHAR(255),
+  password VARCHAR(255),
+  role VARCHAR(255) CHECK (role IN ('Admin','Customer')),
+  customerCategory VARCHAR(255) CHECK (customerCategory IN ('Silver','Gold','Platium')),
+  phone BIGINT,
+  emailId VARCHAR(255),
+  address1 VARCHAR(255),
+  address2 VARCHAR(255),
+  city VARCHAR(255),
+  state VARCHAR(255),
+  country VARCHAR(255),
+  zipCode INT,
+  dob DATE
+);
+
+INSERT INTO User VALUES
+(1, 'JohnDoe', 'password123', 'Customer', 'Gold', 9876543210, 'johndoe@email.com', '123 Main St', 'Apt 4B', 'New York', 'NY', 'USA', 10001, '1990-05-15'),
+(2, 'JaneSmith', 'securePass456', 'Customer', 'Silver', 8765432109, 'janesmith@email.com', '456 Elm St', 'Suite 7A', 'Los Angeles', 'CA', 'USA', 90001, '1985-08-22');
+
+CREATE TABLE FlightBooking (
+  bookingId INT PRIMARY KEY,
+  flightId INT,
+  userId INT,
+  noOfSeats INT,
+  seatCategory VARCHAR(255) CHECK (seatCategory IN ('Economy','Business','Executive')),
+  dateOfTravel DATE,
+  bookingStatus VARCHAR(255) CHECK (bookingStatus IN ('Booked', 'Travel Completed', 'Cancelled')),
+  bookingAmount INT,
+  FOREIGN KEY (userId) REFERENCES User(userID),
+  FOREIGN KEY (flightId) REFERENCES Flight(flightId)
+);
+
+INSERT INTO FlightBooking VALUES
+(101, 1, 1, 2, 'Economy', '2024-06-20', 'Booked', 7000),
+(102, 2, 2, 1, 'Business', '2024-06-25', 'Travel Completed', 15000),
+(103, 1, 1, 3, 'Executive', '2024-07-10', 'Cancelled', 25000);
+
+SELECT * FROM User;
+SELECT * FROM FlightBooking;
+
+-- 9
+UPDATE FlightBooking t1
+JOIN FlightSchedule t2 ON t1.flightId = t2.flightId 
+SET 
+    t1.bookingStatus = 'Cancelled',
+    t2.businessClassBookedCount = CASE 
+        WHEN t1.seatCategory = 'Business' THEN t2.businessClassBookedCount - t1.noOfSeats 
+        ELSE t2.businessClassBookedCount 
+    END,
+    t2.economyClassBookedCount = CASE 
+        WHEN t1.seatCategory = 'Economy' THEN t2.economyClassBookedCount - t1.noOfSeats 
+        ELSE t2.economyClassBookedCount 
+    END,
+    t2.executiveClassBookedCount = CASE 
+        WHEN t1.seatCategory = 'Executive' THEN t2.executiveClassBookedCount - t1.noOfSeats 
+        ELSE t2.executiveClassBookedCount 
+    END
+WHERE t1.bookingId = 101;
+
+
+SELECT * FROM FlightBooking;
+SELECT * FROM FlightSchedule;
+
+-- 10
+DELETE FROM Flight 
+WHERE carrierId = 2 AND destination = 'PUNE';
+
+SELECT * FROM Flight;
+
+-- 11
+SELECT * FROM Carrier t1
+JOIN Flight t2 on t1.carrierId = t2.carrierId 
+WHERE t2.origin = 'CHENNAI' AND t2.destination = 'PUNE' ;
+
+-- 12
+UPDATE Flight t1 
+JOIN Carrier t2 ON t1.carrierId = t2.carrierId 
+SET t1.airFare = t1.airFare + (t1.airFare * 10 / 100) 
+WHERE t1.carrierId = 1 
+AND t1.origin = 'CHENNAI' 
+AND t1.destination = 'PUNE' 
+AND LEAST(
+    t2.DiscountPercentageThirtyDaysAdvanceBooking,
+    t2.DiscountPercentageSixtyDaysAdvanceBooking,
+    t2.DiscountPercentageNinetyDaysAdvanceBooking,
+    t2.BulkBookingDiscount,
+    t2.SilverUserDiscount,
+    t2.GoldUserDiscount,
+    t2.PlatinumUserDiscount
+) > 3;
+
+
+SELECT * FROM Flight;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+userFile="passenger.txt"
+flightFile="airline.txt"
+  
+touch "$userFile" "$flightFile"
+  
+createPassenger() {
+    echo "Enter First Name:"
+    read firstName
+  
+    echo "Enter Last Name:"
+    read lastName
+  
+    echo "Enter DOB (DD-MM-YYYY):"
+    read dob
+  
+    echo "Enter Email ID:"
+    read emailId
+  
+    echo "Enter Contact No:"
+    read contactNo
+  
+    echo "$firstName|$lastName|$dob|$emailId|$contactNo" >> "$userFile"
+    echo "Passenger added successfully!"
+}
+  
+displayPassengers() {
+    echo "List of Passengers:"
+    cat "$userFile"
+}
+  
+createFlight() {
+    echo "Enter Flight Name:"
+    read flightName
+  
+    echo "Enter Origin:"
+    read origin
+  
+    echo "Enter Destination:"
+    read destination
+  
+    echo "Enter Travel Date Time (DD-MM-YYYY):"
+    read travelDate
+  
+    echo "Enter Price:"
+    read price
+  
+    echo "$flightName|$origin|$destination|$travelDate|$price" >> "$flightFile"
+    echo "Flight '$flightName' added successfully!"
+}
+  
+displayFlights() {
+    echo "Flights sorted based on price:"
+    sort -t '|' -k5 -n -r "$flightFile"
+}
+  
+findFlight() {
+    echo "Enter Origin:"
+    read start
+    
+    echo "Enter Destination:"
+    read end
+  
+    echo "Enter Travel Date (DD-MM-YYYY):"
+    read travelDate
+        
+    flights=$(awk -F '|' -v o="$start" -v d="$end" -v dt="$travelDate" 'tolower($2) == tolower(o) && tolower($3) == tolower(d) && $4 ~ dt' "$flightFile")
+    if [[ -z "$flights" ]]; then
+        echo "No flights found !"
+    else
+        echo "Flights:"
+        echo "$flights" | sort -t '|' -k5 -n
+    fi
+}
+  
+findDestination() {
+    echo "Enter destination:"
+    read destination
+  
+    flights=$(awk -F '|' -v d="$destination" 'tolower($3) == tolower(d)' "$flightFile")
+  
+    if [[ -z "$flights" ]]; then
+        echo "No flights found for $destination!"
+    else
+        echo "Flights to $destination:"
+          echo "$flights" | sort -t '|' -k5 -n
+    fi
+}
+  
+while true; do
+    echo "1. Add Passenger"
+    echo "2. display Passengers"
+    echo "3. Add Flight"
+    echo "4. View Flights based on high price"
+    echo "5. Search Flight"
+    echo "6. Search Flight by destination"
+    echo "7. Exit"
+    echo "Choose an option:"
+    read option
+  
+    case $option in
+        1) createPassenger ;;
+        2) displayPassengers ;;
+        3) createFlight ;;
+        4) displayFlights ;;
+        5) findFlight ;;
+        6) findDestination ;;
+        7) echo "Exit"; exit ;;
+        *) echo "Invalid option!" ;;
+    esac
+done

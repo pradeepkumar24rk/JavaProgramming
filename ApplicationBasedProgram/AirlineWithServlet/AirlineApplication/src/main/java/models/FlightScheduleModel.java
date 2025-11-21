@@ -1,15 +1,28 @@
-public class FlightSchedule {
+package models;
+
+import java.time.LocalDate;
+
+public class FlightScheduleModel {
     private int flightScheduleId;
     private int flightId;
-    private String dateOfTravel;
+    private LocalDate dateOfTravel;
     private int bussinessClassBookedCount;
     private int economyClassBookedCount;
     private int executiveClassBookedCount;
     
-    public FlightSchedule(int flightScheduleId,int flightId,String dateOfTravel) {
+    public FlightScheduleModel(int flightScheduleId,int flightId,LocalDate dateOfTravel) {
         this.flightScheduleId = flightScheduleId;
         this.flightId = flightId;
         this.dateOfTravel = dateOfTravel;
+    }
+    
+    public FlightScheduleModel(int flightScheduleId,int flightId,LocalDate dateOfTravel,int economyClassBookedCount,int bussinessClassBookedCount,int executiveClassBookedCount) {
+        this.flightScheduleId = flightScheduleId;
+        this.flightId = flightId;
+        this.dateOfTravel = dateOfTravel;
+        this.bussinessClassBookedCount = bussinessClassBookedCount;
+        this.economyClassBookedCount = economyClassBookedCount;
+        this.executiveClassBookedCount = executiveClassBookedCount;
     }
     
     
@@ -18,7 +31,7 @@ public class FlightSchedule {
         return flightId;
     }
     
-    public String getDateOfTravel() {
+    public LocalDate getDateOfTravel() {
         return dateOfTravel;
     }
     

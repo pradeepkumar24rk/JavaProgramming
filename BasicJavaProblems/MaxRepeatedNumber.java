@@ -2,7 +2,7 @@ package BasicJavaProblems;
 
 public class MaxRepeatedNumber {
     public static void main(String[] args) {
-        int a[] = { 5, 1, 2, 6, 2, 5 }, max = Integer.MIN_VALUE;
+        int a[] = { 5, 1, 2, 6, 2, 5, }, max = Integer.MIN_VALUE;
         for (int i = 0; i < a.length; i++)
             if (max < a[i])
                 max = a[i];

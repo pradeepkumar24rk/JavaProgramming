@@ -12,6 +12,15 @@ public class FlightSchedule {
         this.dateOfTravel = dateOfTravel;
     }
     
+    public FlightSchedule(int flightScheduleId,int flightId,String dateOfTravel,int economyClassBookedCount,int bussinessClassBookedCount,int executiveClassBookedCount) {
+        this.flightScheduleId = flightScheduleId;
+        this.flightId = flightId;
+        this.dateOfTravel = dateOfTravel;
+        this.bussinessClassBookedCount = bussinessClassBookedCount;
+        this.economyClassBookedCount = economyClassBookedCount;
+        this.executiveClassBookedCount = executiveClassBookedCount;
+    }
+    
     
     //Getter
     public int getFlightId() {

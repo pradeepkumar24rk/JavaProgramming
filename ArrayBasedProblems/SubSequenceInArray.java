@@ -86,5 +86,6 @@ public class SubSequenceInArray {
         bitSubSequence();
         listSubSequence();
         listSubSequenceDuplicate();
+        targetSumSubSequence();
     }
 }
