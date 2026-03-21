@@ -38,7 +38,7 @@ public class SubSequenceInArray {
         System.out.println(outer);
     }
 
-    private static void listSubSequenceDuplicate() { // time complexity - o(n*2^n) with duplication allow
+    private static void listSubSequenceDuplicate() { // time complexity - o(n*2^n) remove duplication
         int nums[] = { 1, 2, 2 };
         Arrays.sort(nums);
         ArrayList<ArrayList<Integer>> outer = new ArrayList<>();
@@ -50,7 +50,7 @@ public class SubSequenceInArray {
                 start = end + 1;
             end = outer.size() - 1;
             int n = outer.size();
-            for (int j = 0; j < n; j++) {
+            for (int j = start; j < n; j++) {
                 ArrayList<Integer> inter = new ArrayList<>(outer.get(j));
                 inter.add(nums[i]);
                 outer.add(inter);
@@ -58,6 +58,17 @@ public class SubSequenceInArray {
         }
         System.out.println(outer);
     }
+    
+    // [[], [1], [2], [1, 2], [2], [1, 2], [2, 2], [1, 2, 2] ] with duplication [2] [1,2] 
+    // Remove duplicate from above list 
+    
+    // if we have duplicate element initially we need to sort the array first.
+    // [[]]
+    // [[],[1]]
+    // [[],[1],[2],[1, 2]]
+    // Add new element [2] with new added element in list [2], [1, 2]
+    // [[],[1],[2],[1,2],[2,2],[1,2,2]]
+    
 
     private static void targetSumSubSequence() {
         int a[] = { 5, 3, 1, 6, 2 }, sumOfSquence = 6, n = a.length, total = (1 << n) - 1, count = 0;
