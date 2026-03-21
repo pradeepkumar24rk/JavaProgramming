@@ -1,3 +1,5 @@
+package Tree;
+
 class Tree {
     int val;
     Tree left, right;
@@ -39,7 +41,7 @@ public class BinaryTree {
     }
 
     // preorder traversal
-    
+
     public static void preorder(Tree root) {
         if (root == null)
             return;
