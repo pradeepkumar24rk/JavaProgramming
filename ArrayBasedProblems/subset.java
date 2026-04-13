@@ -21,6 +21,13 @@ public class subset {
   }
 }
 
+// Explaination of problem:
+// Given an integer array nums of unique elements, return all possible subsets (the power set).
+// The solution set must not contain duplicate subsets. The subsets can be returned in any order.
+
+
+
+
 // output
 
 // 1 1 2 

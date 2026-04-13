@@ -66,7 +66,7 @@ public class SubSequenceInArray {
     // [[]]
     // [[],[1]]
     // [[],[1],[2],[1, 2]]
-    // Add new element [2] with new added element in list [2], [1, 2]
+    // Add new element [2] with newlly added element in list [2], [1, 2]
     // [[],[1],[2],[1,2],[2,2],[1,2,2]]
     
 
