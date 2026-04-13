@@ -7,7 +7,7 @@ public class ArraySumPossible {
     int[] num = { 1, 2, 3 };
     int amount = 4;
     System.out.println("All possible sum: " + sumAllPossible(amount, new HashMap<>(), num, ""));
-    System.out.println("Is Possible sum: " + sumPossible(amount, new HashMap<>(), num));
+    System.out.println("Is Possible sum: " + isSumPossible(amount, new HashMap<>(), num));
 
     System.out.println("The minimal possible: "+MinPossibleLength(amount, new HashMap<>(), num, ""));
   }
@@ -35,7 +35,7 @@ public class ArraySumPossible {
     return res;
   }
 
-  public static boolean sumPossible(int amount, HashMap<Integer, Boolean> mem, int[] num) {
+  public static boolean isSumPossible(int amount, HashMap<Integer, Boolean> mem, int[] num) {
     if (amount == 0)
       return true;
 
@@ -49,7 +49,7 @@ public class ArraySumPossible {
 
     for (int i = 0; i < num.length; i++) {
       int subAmount = amount - num[i];
-      if (sumPossible(subAmount, mem, num)) {
+      if (isSumPossible(subAmount, mem, num)) {
         mem.put(subAmount, true);
         return true;
       }
